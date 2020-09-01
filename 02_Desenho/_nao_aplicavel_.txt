@@ -1,0 +1,2 @@
+Esta pasta serviria para guardar componentes graficas do sistema que tivessem sido desenvolvidas.
+Tratando -se o projecto de um sistema de back-end esta componente é ignorada.
