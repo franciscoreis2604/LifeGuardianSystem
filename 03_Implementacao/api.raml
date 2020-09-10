@@ -1,0 +1,451 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/8779dce0-df9c-4499-b316-29208b431d4a/ # 
+title: Life Guardian System
+description: Life Guardian System Application Back-end
+mediaType:
+  - application/json
+version: 1.0.0
+protocols:
+  - HTTP
+  
+/login:
+  post:
+    displayName: Login
+    body:
+      example:
+        strict: true
+        value:
+          username: jorge@floyd.org
+          password: "blm"
+      type: object
+    responses:
+      "200":
+        headers:
+            Authorization: 
+                description: Required header in every package to authenticate a valid user
+                example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTk4OTYwNDAyLCJleHAiOjE1OTk1MTk2MDB9.hRlx1k-CfjGqdFM9FLB6ImW82gOgnMG90gG2j10vLFc
+                type: string
+            UserID:
+                description: The user id
+                example: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+                type: string
+        description: Login sucessful
+      "401":
+        description: Wrong credentials
+/lgs/v1: 
+    description: Root
+    /user:
+      get:
+        displayName: Get all Users
+        description: Administrator functionality.
+        headers:
+          Authorization:
+            description: Required header in every package to authenticate a valid user
+            example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+            type: string
+        responses:
+          "200":
+            body:
+              application/json:
+                description: returns all existing users in database
+                example:
+                  strict: true
+                  value:
+                      [
+                          {
+                              "name": "John Doe",
+                              "phoneNumber": "123456789",
+                              "birthDate": "1970-02-14",
+                              "id": "62f2137e-7bce-46f6-8c18-30ed24434c2f"
+                          },
+                          {
+                              "name": "Jorge Floyd",
+                              "phoneNumber": "987654321",
+                              "birthDate": "1974-05-25",
+                              "id": "5f82e7b9-d3a9-45df-8287-bacd7da159e3"
+                          }
+                      ]
+                type: array
+          "403":
+            description: User does not have autorization to access this page
+            body:
+              type: object
+          "500":
+            description: Authorization token is invalid
+      post:
+        displayName: user
+        description: Inserts a valid user into the database
+        headers:
+          Authorization:
+            description: Required header in every package to authenticate a valid user
+            example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+            type: string
+        body:
+          example:
+            strict: true
+            value:
+              name: George Floyd
+              email: jorge@floyd.org
+              password: password
+              phoneNumber: "916619278"
+              birthDate: 1980-02-26
+          type: object
+        responses:
+          "200":
+            body:
+              example: 2d36f1df-9605-49f5-b6c0-fd24c332a633
+              type: string
+              minLength: 36
+              maxLength: 36
+          "400":
+            description: User body is malformed or user already exists.
+          "500":
+            description: Authorization token is invalid    
+
+      /{userId}:
+        get:
+          displayName: Get user by id
+          description: Gets information related to an user based on the id given.
+          headers:
+            Authorization:
+              description: Required header in every package to authenticate a valid user
+              example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+              type: string
+          responses:
+              "200":
+                body:
+                  application/json:
+                    description: returns user information in database
+                    example:
+                      strict: true
+                      value:
+                            name: Jorge Floyd
+                            phoneNumber: 987654321
+                            birthDate: 1974-05-25
+                            id: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+                    type: object
+              "400":
+                  description: User not found
+              "500":
+                description: Authorization token is invalid
+
+        delete:
+            displayName: Delete user by id
+            description: Deletes an user based on the id given.
+            headers:
+                Authorization:
+                  description: Required header in every package to authenticate a valid user
+                  example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+                  type: string
+            responses:
+              "200":
+                description: User deleted
+              "400":
+                description: Invalid ID
+              "500":
+                description: Authorization token is invalid
+
+        put:
+              displayName: Update user information
+              description: Allows for update of fields and the adding of new ones
+              headers:
+                Authorization:
+                  description: Required header in every package to authenticate a valid user
+                  example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+                  type: string
+              body:
+                application/json:
+                  example:
+                    strict: true
+                    value:
+                      name: Jorge Floyd
+                      phoneNumber: 987654321
+                      birthDate: 1974-05-25
+                  type: object
+              responses:
+                "200":
+                  description: User was updated
+                "400":
+                  description: Invalid JSON format, invalid field value or invalid ID
+                "500":
+                  description: Authorization token is invalid
+      /credentials/{userId}:
+        put:
+                displayName: Update user credentials
+                description: Allows for update of login credentials
+                headers:
+                  Authorization:
+                    description: Required header in every package to authenticate a valid user
+                    example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+                  type: string
+                body:
+                  application/json:
+                    example:
+                      strict: true
+                      value:
+                        email: jorge@floyd.org
+                        password: blm
+                    type: object
+                responses:
+                  "200":
+                    description: User was updated
+                  "400":
+                    description: Invalid JSON format, invalid field value or invalid ID
+                  "500":
+                    description: Authorization token is invalid
+
+    /user/contacts:
+        post:
+          displayName: Insert an sos contact to users contact list
+          headers:
+            Authorization:
+              description: Required header in every package to authenticate a valid user
+              example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+            type: string
+          body:
+            example:
+              strict: true
+              value:
+                userId: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+                contactName: Donald Trump
+                contactInfo:
+                -
+                  name: Email
+                  value: barack@mail.gov
+                -
+                  name: Telephone
+                  value: "987654321"
+            type: object
+          responses:
+              "200":
+                description: SOS contact was added
+              "400":
+                description: Invalid JSON format, invalid field value or invalid ID
+              "500":
+                description: Authorization token is invalid
+        put:
+            displayName: Update sos contacts list
+            description: Allows for update of fields and the adding of new ones
+            headers:
+              Authorization:
+                description: Required header in every package to authenticate a valid user
+                example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+              type: string
+            body:
+              application/json:
+                example:
+                  strict: true
+                  value:
+                    userId: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+                    contactName: Barack Obama
+                    contactInfo:
+                      -
+                        name: Mobile
+                        value: "3217498576"
+                      -
+                        name: Telephone
+                        value: "123456789"
+                type: object
+            responses:
+              "200":
+                description: SOS contact was updated
+              "400":
+                description: Invalid JSON format, invalid field value or invalid ID
+              "500":
+                description: Authorization token is invalid
+        delete:
+          displayName: Delete sos contact bundle
+          headers:
+            Authorization:
+              description: Required header in every package to authenticate a valid user
+              example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+            type: string
+          body:
+            application/json:
+              example:
+                strict: true
+                value:
+                  userId: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+                  contactName: Barack Obama
+                  contactInfo:
+                  -
+                    name: Mobile
+                    value: "3217498576"
+                  -
+                    name: Telephone
+                    value: "123456789"
+              type: object
+          responses:
+            "200":
+              description: SOS contact was updated
+            "400":
+              description: Invalid JSON format, invalid field value or invalid ID
+            "500":
+              description: Authorization token is invalid
+
+
+        /{userId}:
+          get:
+            displayName: Get user sos contact list
+            description: Returns a users sos contacts list
+            headers:
+              Authorization:
+                description: Required header in every package to authenticate a valid user
+                example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+              type: string
+            responses:
+              "200":
+                body:
+                  example:
+                    strict: true
+                    value:
+                      userId: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+                      contactName: Barack
+                      contactInfo:
+                      -
+                        name: Email
+                        value: barack@mail.gov
+                      -
+                        name: Telephone
+                        value: "987654321"
+                  type: object
+              "400":
+                description: Invalid JSON format, invalid field value or invalid ID
+              "500":
+                description: Authorization token is invalid
+          uriParameters:
+            id:
+              description: User id
+              example: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+              type: string
+
+        /notify/{userId}:
+          get:
+            displayName: Notify SOS contacts
+            headers:
+              Authorization:
+                description: Required header in every package to authenticate a valid user
+                example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+              type: string
+            responses:
+              "200":
+                description: SOS contacts notified
+              "400":
+                description: Invalid ID
+              "500":
+                description: Authorization token is invalid
+        uriParameters:
+          id:
+            description: User id
+            example: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+            type: string
+
+    /sensorData:
+      post:
+        displayName: Insert sensor data to database and monitors the health risk
+        headers:
+              Authorization:
+                  description: Required header in every package to authenticate a valid user
+                  example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+              type: string
+        body:
+          example:
+            strict: true
+            value:
+              userId: 62f2137e-7bce-46f6-8c18-30ed24434c2f
+              sensorData:
+                -
+                  name: Temperature
+                  value: 37.5
+                -
+                  name: Pulse
+                  value: 87
+          type: object
+        responses:
+            "200":
+              body:
+                application/json:
+                  example:
+                    strict: true
+                    value:
+                      Risk Level: 6
+                      Risk Description: Medium risk
+                  type: object
+            "400":
+                description: Invalid JSON format, invalid field value or invalid ID
+            "500":
+                description: Authorization token is invalid
+    /sensorData/{userId}:
+      get:
+        displayName: Get sensor packets from userId
+        headers:
+              Authorization:
+                description: Required header in every package to authenticate a valid user
+                example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3JnZUBmbG95ZC5vcmciLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XSwiaWF0IjoxNTkxNDc3ODYyLCJleHAiOjE1OTIwMDI4MDB9.IcflaWKyqNJuefYNcRV4dmP2SVIZ5083nhpCD7SwjHc
+              type: string
+        responses:
+          "200":
+            body:
+              example:
+                strict: true
+                value:
+                  userId: 62f2137e-7bce-46f6-8c18-30ed24434c2f
+                  sensorData:
+                    -
+                      name: Temperature
+                      value: 36.5
+                      timeStamp: 2020-09-01T15:23:29.671+00:00
+                      riskLevel: 0
+                      riskDescription: "Safe"
+
+                    -
+                      name: pulse
+                      value: 80
+                      timeStamp: 2020-09-01T15:23:29.671+00:00
+                      riskLevel: 0
+                      riskDescription: "Safe"  
+
+                    -
+                      name: Temperature
+                      value: 35.5
+                      timeStamp: 2020-09-01T15:23:29.671+00:00
+                      riskLevel: 6
+                      riskDescription: "Medium risk"
+
+                    -
+                      name: pulse
+                      value: 150.0
+                      timeStamp: 2020-09-01T15:23:29.671+00:00
+                      riskLevel: 6
+                      riskDescription: "Medium risk"
+              type: object
+          "400":
+              description: Invalid JSON format, invalid field value or invalid ID
+          "500":
+              description: Authorization token is invalid
+      delete:
+        displayName: Delete sensor packet in database
+        description: Deletes a sensor packet in database.
+        responses:
+          "200":
+            description: Sensor packet was deleted
+          "400":
+            description: Invalid JSON format, invalid field value or invalid ID
+          "500":
+            description: Authorization token is invalid
+        body:
+          example:
+            strict: true
+            value:
+              userId: 62f2137e-7bce-46f6-8c18-30ed24434c2f
+              sensorData:
+                -
+                  name: Pulse
+                  value: 150.0
+                  timeStamp: 2020-09-01T15:23:29.671+00:00
+          type: object
+      uriParameters:
+        id:
+          description: User id
+          example: 5f82e7b9-d3a9-45df-8287-bacd7da159e3
+          type: string
