@@ -1,0 +1,40 @@
+NORMAL OU RISCO BAIXO, MEDIO E ALTO
+
+NORMAL ->
+RISCO BAIXO -> ALERTA UNICAMENTE AO UTILIZADOR, DAR TIPS PARA MELHORAR. MAX TEMPO ACAO 3 DIAS.
+RISCO MEDIO -> ALERTA UTILIZADOR COM POSSIBILIDADE DE DAR AOS SOS, MAX TEMPO ACAO 1 DIA.
+RISCO ALTO -> AÇÃO GARANTIDA, UTILIZADOR PODE BLOQUEAR MAS SE NAO MELHORA DEVE SER REALIZADA AÇAO.
+MAX TEMPO ACAO - HORAS (DEPENDE DO NUMERO DE PARAMETROS EM RISCO ALTO)
+
+TEMPERATURA : 2 params,temp baixas menor risco que temp alta
+1-param
+	salto de >=1 grau(s) dentro do normal, avisar utilizador
+
+
+2-param
+	sair fora dos valores "normais" = [36-37.9]
+
+	BAIXO [35-35.9] , [38-38.9]  --- 1
+	MEDIO [34-34.9] , [39-39.9] --- 2
+	ALTO < 33.9, > 40  --- 5
+
+
+
+BATIMENTOS CARDIACOS: BC altos menor risco que BC baixos
+	-OTIMO-> [60-80]
+	-NORMAL -> [60-100]
+	-ALERTA 1 -> ]80-100] cria alerta de risco
+	
+	BAIXO [101-120] , [50-60] --- 1
+	MEDIO [120-150] , [40-50] --- 2
+	ALTO > 150, < 40. --- 5
+
+MAX 10
+1 + 1 = 2
+1 + 2 = 3
+1 + 5 = 6
+
+2 + 2 = 4
+2 + 5 = 7
+
+5 + 5 = 10 
