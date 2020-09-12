@@ -1,0 +1,53 @@
+title Application Life Cycle
+
+bottomparticipants 
+
+participantgroup #lightgrey External Device
+participant "Sensoring Device" as SD
+participant "Mobile Device" as MD
+end
+
+participant "Event Queue" as EQ
+
+participantgroup #lightblue Life Guardian System
+participant "LGS API" as API
+participant "LGS Backend" as Backend
+database "Database" as DB
+end
+
+MD -> EQ : Subscribe to Queue
+
+==Sync/Pairing==
+
+SD --> MD : SensorDataPacket
+linear
+MD -> API : SensorDataBundle {SensorType : Value,...}
+API -> Backend : New Data
+linear off
+
+activate Backend
+Backend --> Backend : CalculateImmediateCautionLevel() 
+linear
+Backend --> API : CautionResult
+API -->MD : CautionResult
+linear off
+Backend->DB : StoreData(SensorData Bundle,CautionResult)
+
+
+loop #lightgrey scheduled
+Backend -> DB : Fetch last X entries of UserData
+DB -->Backend : UserSensoryData []
+Backend -->Backend : CalculateDelayedCautionLevel()
+
+alt #grey 
+Backend -#lightgreen> EQ: SendLowCautionNotification(User)
+EQ --#lightgreen> MD : LowCautionkNotification 
+else #yellow
+Backend -#yellow> EQ: SendMediumCautionNotification(User)
+EQ --#yellow> MD : MediumCautionNotification 
+else #red
+Backend -#red> EQ: SendHighCautionNotification(User)
+EQ --#red> MD : HighCautionNotification 
+end
+
+end

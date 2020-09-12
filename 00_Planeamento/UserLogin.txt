@@ -1,0 +1,34 @@
+title User Login
+
+bottomparticipants 
+
+participantgroup #lightgrey External Device
+participant "Sensoring Device" as SD
+participant "Mobile Device" as MD
+end
+
+participant "Event Queue" as EQ
+
+participantgroup #lightblue Life Guardian System
+participant "LGS API" as API
+participant "LGS Backend" as Backend
+database "Database" as DB
+end
+
+==Sync/Pairing==
+
+MD -> API : Login(User,Password)
+
+alt #lightgrey Successfull signing
+
+
+API --#green> MD : Authentication Key 
+
+MD -#green> EQ : Subscribe to Queue (UserID)
+
+else failed signin
+
+API --#red> MD : User Invalid Error Code 
+
+
+end
