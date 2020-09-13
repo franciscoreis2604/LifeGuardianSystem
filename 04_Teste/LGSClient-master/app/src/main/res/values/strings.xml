@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">LGS</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="loginAndRegister">Login</string>
+    <string name="profile">Profile</string>
+    <string name="history">History</string>
+    <string name="logout">Logout</string>
+    <string name="monitor">Monitor</string>
+    <string name="stopMonitor">Stop monitoring</string>
+    <string name="name">Name</string>
+    <string name="notified">SOS Contacts notified</string>
+</resources>
