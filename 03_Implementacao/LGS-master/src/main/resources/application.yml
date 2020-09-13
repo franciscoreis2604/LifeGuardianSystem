@@ -1,0 +1,11 @@
+app:
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/lgsdb
+    username: postgres
+    password: password
+    pool-size: 30
+
+  twilio:
+    account_sid: AC48b5f4a3f0e74078484f14e194a2851b
+    auth_token: 2a46a91d81fa73d260e7de58041456ea
+    trail_number: +14692538978
