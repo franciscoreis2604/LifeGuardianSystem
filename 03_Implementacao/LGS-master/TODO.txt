@@ -1,6 +1,0 @@
-File containing TODO things
-
-
-Ensure requests to certain methods are coming from the persons with that ID
-Add rabbitMQ support
-Add risk factor calculation
