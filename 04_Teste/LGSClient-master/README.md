@@ -1,2 +1,0 @@
-# LGSClient
-LGS Android client
